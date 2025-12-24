@@ -132,7 +132,7 @@
         .notice-tag.balance { background: #fffbe6; color: #d48806; }
         .notice-content { flex: 1; font-size: 13px; }
         .notice-time { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
-        .data-overview { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+        .data-overview { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
         .data-item { text-align: center; padding: 12px; background: #fafafa; border-radius: 4px; }
         .data-item-label { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 4px; }
         .data-item-value { font-size: 24px; font-weight: 500; }
@@ -333,24 +333,6 @@
                             <button class="ranking-page-btn" onclick="showPage('verifyRate', 2)">6-10</button>
                         </div>
                     </div>
-                    <!-- 出票成功率 Top10 -->
-                    <div class="ranking-section">
-                        <div class="ranking-label">
-                            Ticketing Success Rate Top10
-                            <span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">Top 10 by Ticketing Success Rate</div>The 10 airlines with the highest ticketing success rate on the Atlas platform.<div class="tooltip-refresh">🔄 Refresh: Daily at 14:00</div></div></span>
-                        </div>
-                        <ul class="ranking-list" id="ticketRateList">
-                            <li class="ranking-item"><span class="ranking-num top-1">1</span><span class="ranking-name"><a href="airline-detail-en.html">IndiGo (6E)</a></span><span class="ranking-value success">97.5%</span></li>
-                            <li class="ranking-item"><span class="ranking-num top-2">2</span><span class="ranking-name"><a href="airline-detail-en.html">Spirit Airlines (NK)</a></span><span class="ranking-value success">96.8%</span></li>
-                            <li class="ranking-item"><span class="ranking-num top-3">3</span><span class="ranking-name"><a href="airline-detail-en.html">Frontier (F9)</a></span><span class="ranking-value success">95.6%</span></li>
-                            <li class="ranking-item"><span class="ranking-num">4</span><span class="ranking-name"><a href="airline-detail-en.html">Azul Airlines (AD)</a></span><span class="ranking-value success">94.8%</span></li>
-                            <li class="ranking-item"><span class="ranking-num">5</span><span class="ranking-name"><a href="airline-detail-en.html">Lion Airlines (JT)</a></span><span class="ranking-value success">93.4%</span></li>
-                        </ul>
-                        <div class="ranking-pagination">
-                            <button class="ranking-page-btn active" onclick="showPage('ticketRate', 1)">1-5</button>
-                            <button class="ranking-page-btn" onclick="showPage('ticketRate', 2)">6-10</button>
-                        </div>
-                    </div>
                     <!-- 航司热门度排名 -->
                     <div class="ranking-section">
                         <div class="ranking-label">
@@ -450,8 +432,6 @@
                     <div class="section-subtitle">Based on your API call data</div>
                 </div>
                 <div class="time-selector">
-                    <button class="time-btn">15min</button>
-                    <button class="time-btn">30min</button>
                     <button class="time-btn">1h</button>
                     <button class="time-btn">4h</button>
                     <button class="time-btn">Yesterday</button>
@@ -480,11 +460,6 @@
                         <div class="data-item-value" style="color: var(--warning-color)">5.2%</div>
                         <div class="data-item-trend trend-down">↑ 0.3%</div>
                     </div>
-                    <div class="data-item">
-                        <div class="data-item-label">Ticketing Success Rate<span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">My Overall Ticketing Success Rate</div>The percentage of successful ticketing across all airlines.<div class="tooltip-refresh">🔄 Refresh: Daily at 14:00</div></div></span></div>
-                        <div class="data-item-value" style="color: var(--success-color)">95.1%</div>
-                        <div class="data-item-trend trend-up">↑ 0.2%</div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -504,8 +479,6 @@
                             <option value="top5">Top5</option>
                         </select>
                         <div class="time-selector">
-                            <button class="time-btn">15min</button>
-                            <button class="time-btn">30min</button>
                             <button class="time-btn">1h</button>
                             <button class="time-btn">4h</button>
                             <button class="time-btn">Yesterday</button>
@@ -548,23 +521,6 @@
                             <li class="ranking-item"><span class="ranking-num">5</span><span class="ranking-name"><a href="airline-detail-en.html">easyJet (U2)</a></span><span class="ranking-value warning">83.6%</span></li>
                         </ul>
                     </div>
-                    <div class="ranking-section">
-                        <div class="ranking-label">
-                            Ticketing Success Rate
-                            <select class="filter-select" style="margin-left: 8px; padding: 2px 8px; font-size: 12px;">
-                                <option value="top5">Top 5</option>
-                                <option value="bottom5" selected>Bottom 5</option>
-                            </select>
-                            <span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">Airlines by Ticketing Success Rate</div>Airlines with the highest/lowest ticketing success rates.<div class="tooltip-refresh">🔄 Refresh: Daily at 14:00</div></div></span>
-                        </div>
-                        <ul class="ranking-list">
-                            <li class="ranking-item"><span class="ranking-num" style="background:#fff2f0;color:#ff4d4f;">1</span><span class="ranking-name"><a href="airline-detail-en.html">Pegasus (PC)</a></span><span class="ranking-value error">68.9%</span></li>
-                            <li class="ranking-item"><span class="ranking-num" style="background:#fff2f0;color:#ff4d4f;">2</span><span class="ranking-name"><a href="airline-detail-en.html">Vueling (VY)</a></span><span class="ranking-value error">75.2%</span></li>
-                            <li class="ranking-item"><span class="ranking-num" style="background:#fffbe6;color:#d48806;">3</span><span class="ranking-name"><a href="airline-detail-en.html">Wizz Air (W6)</a></span><span class="ranking-value warning">85.6%</span></li>
-                            <li class="ranking-item"><span class="ranking-num">4</span><span class="ranking-name"><a href="airline-detail-en.html">Ryanair (FR)</a></span><span class="ranking-value warning">88.5%</span></li>
-                            <li class="ranking-item"><span class="ranking-num">5</span><span class="ranking-name"><a href="airline-detail-en.html">easyJet (U2)</a></span><span class="ranking-value warning">89.2%</span></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
 
@@ -576,8 +532,6 @@
                         <div class="section-subtitle">Higher = more volatility</div>
                     </div>
                     <div class="time-selector">
-                        <button class="time-btn">15min</button>
-                        <button class="time-btn">30min</button>
                         <button class="time-btn">1h</button>
                         <button class="time-btn">4h</button>
                         <button class="time-btn">Yesterday</button>
@@ -606,8 +560,6 @@
                         <div class="section-subtitle">Higher = more volatility</div>
                     </div>
                     <div class="time-selector">
-                        <button class="time-btn">15min</button>
-                        <button class="time-btn">30min</button>
                         <button class="time-btn">1h</button>
                         <button class="time-btn">4h</button>
                         <button class="time-btn">Yesterday</button>
@@ -728,22 +680,6 @@
                     { rank: 10, name: 'Jetstar (JQ)', value: '90.8%', class: 'success' }
                 ]
             },
-            ticketRate: {
-                1: [
-                    { rank: 1, name: 'IndiGo (6E)', value: '97.5%', class: 'success' },
-                    { rank: 2, name: 'Spirit Airlines (NK)', value: '96.8%', class: 'success' },
-                    { rank: 3, name: 'Frontier (F9)', value: '95.6%', class: 'success' },
-                    { rank: 4, name: 'Azul Airlines (AD)', value: '94.8%', class: 'success' },
-                    { rank: 5, name: 'Lion Airlines (JT)', value: '93.4%', class: 'success' }
-                ],
-                2: [
-                    { rank: 6, name: 'Scoot (TR)', value: '92.7%', class: 'success' },
-                    { rank: 7, name: 'Cebu Pacific (5J)', value: '91.9%', class: 'success' },
-                    { rank: 8, name: 'VietJet Air (VJ)', value: '91.2%', class: 'success' },
-                    { rank: 9, name: 'AirAsia X (D7)', value: '90.5%', class: 'success' },
-                    { rank: 10, name: 'Jetstar (JQ)', value: '89.8%', class: 'success' }
-                ]
-            },
             popularity: {
                 1: [
                     { rank: 1, name: 'IndiGo (6E)', value: '12,450', class: '' },
@@ -797,7 +733,6 @@
         function showPage(listId, page) {
             const listMap = {
                 verifyRate: 'verifyRateList',
-                ticketRate: 'ticketRateList',
                 popularity: 'popularityList',
                 highVol: 'highVolatilityList',
                 lowVol: 'lowVolatilityList'

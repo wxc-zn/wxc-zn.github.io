@@ -179,10 +179,6 @@
                         <div class="data-card-label">平台生单变价率<span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">平台生单变价率</div>该航司在Atlas平台整体的生单变价率。<div class="tooltip-refresh">🔄 每日14:00更新</div></div></span></div>
                         <div class="data-card-value success">2.3%</div>
                     </div>
-                    <div class="data-card">
-                        <div class="data-card-label">平台出票成功率<span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">平台出票成功率</div>该航司在Atlas平台整体的出票成功率。<div class="tooltip-refresh">🔄 每日14:00更新</div></div></span></div>
-                        <div class="data-card-value success">97.2%</div>
-                    </div>
                     <div class="availability-stat">
                         <div class="availability-value">99.8%</div>
                         <div class="availability-label">可用时长<span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">可用时长比例</div>该航司在过去30天内正常服务的时间占比。<div class="tooltip-refresh">🔄 每日14:00更新</div></div></span><br>(近30天)</div>
@@ -215,8 +211,6 @@
             <div class="section-header">
                 <div><span class="section-title">我的数据表现</span><span class="section-subtitle">（您在该航司的数据）</span></div>
                 <div class="time-selector">
-                    <button class="time-btn">15分钟</button>
-                    <button class="time-btn">30分钟</button>
                     <button class="time-btn">1小时</button>
                     <button class="time-btn">4小时</button>
                     <button class="time-btn">昨日</button>
@@ -225,7 +219,7 @@
             </div>
             <div class="section-body">
                 <div class="subsection-label">预订流程各环节成功率</div>
-                <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 24px;">
+                <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 24px;">
                     <div class="data-card">
                         <div class="data-card-label">搜索有结果率<span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">搜索有结果率</div>您在该航司的搜索请求中，成功返回航班结果的比例。<div class="tooltip-compare">📊 环比: 昨日=对比前天 | 近7天=对比前7天</div><div class="tooltip-refresh">🔄 每日14:00更新</div></div></span></div>
                         <div class="data-card-value success">94.2%</div>
@@ -251,11 +245,6 @@
                         <div class="data-card-value success">2.1%</div>
                         <div class="data-card-trend trend-up">↓ 0.2% 环比</div>
                     </div>
-                    <div class="data-card">
-                        <div class="data-card-label">出票成功率<span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">出票成功率</div>您在该航司的出票请求中，成功出票的比例。<div class="tooltip-compare">📊 环比: 昨日=对比前天 | 近7天=对比前7天</div><div class="tooltip-refresh">🔄 每日14:00更新</div></div></span></div>
-                        <div class="data-card-value success">97.2%</div>
-                        <div class="data-card-trend trend-up">↑ 0.4% 环比</div>
-                    </div>
                 </div>
                 <div class="subsection-label">趋势图表</div>
                 <div class="grid-2">
@@ -275,8 +264,6 @@
             <div class="section-header">
                 <div><span class="section-title">航线列表</span><span class="section-subtitle">（您在该航司的数据）</span></div>
                 <div class="time-selector">
-                    <button class="time-btn">15分钟</button>
-                    <button class="time-btn">30分钟</button>
                     <button class="time-btn">1小时</button>
                     <button class="time-btn">4小时</button>
                     <button class="time-btn">昨日</button>
@@ -298,7 +285,7 @@
                             <th><span class="th-label">验价变价率<span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">验价变价率</div>您在该航线的验价变价率。<div class="tooltip-refresh">🔄 每日14:00更新</div></div></span></span></th>
                             <th><span class="th-label">生单成功率<span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">生单成功率</div>您在该航线的生单成功率。<div class="tooltip-refresh">🔄 每日14:00更新</div></div></span></span></th>
                             <th><span class="th-label">生单变价率<span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">生单变价率</div>您在该航线的生单变价率。<div class="tooltip-refresh">🔄 每日14:00更新</div></div></span></span></th>
-                            <th><span class="th-label">出票成功率<span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">出票成功率</div>您在该航线的出票成功率。<div class="tooltip-refresh">🔄 每日14:00更新</div></div></span></span></th>
+                            <th class="sortable"><span class="th-label">验价次数 ↓<span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">验价次数</div>您在该航线的验价请求总次数。<div class="tooltip-refresh">🔄 每日14:00更新</div></div></span></span></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -310,7 +297,7 @@
                             <td><span class="rate-value success">3.1%</span></td>
                             <td><span class="rate-value success">96.5%</span></td>
                             <td><span class="rate-value success">1.8%</span></td>
-                            <td><span class="rate-value success">98.5%</span></td>
+                            <td><span class="rate-value">1,245</span></td>
                         </tr>
                         <tr>
                             <td><strong>BLR → DEL</strong></td>
@@ -320,7 +307,7 @@
                             <td><span class="rate-value success">3.5%</span></td>
                             <td><span class="rate-value success">95.2%</span></td>
                             <td><span class="rate-value success">2.2%</span></td>
-                            <td><span class="rate-value success">97.8%</span></td>
+                            <td><span class="rate-value">892</span></td>
                         </tr>
                         <tr>
                             <td><strong>DEL → CCU</strong></td>
@@ -330,7 +317,7 @@
                             <td><span class="rate-value success">4.2%</span></td>
                             <td><span class="rate-value success">94.8%</span></td>
                             <td><span class="rate-value success">2.5%</span></td>
-                            <td><span class="rate-value success">97.1%</span></td>
+                            <td><span class="rate-value">756</span></td>
                         </tr>
                         <tr>
                             <td><strong>DEL → SIN</strong></td>
@@ -340,7 +327,7 @@
                             <td><span class="rate-value warning">9.2%</span></td>
                             <td><span class="rate-value warning">86.8%</span></td>
                             <td><span class="rate-value success">5.5%</span></td>
-                            <td><span class="rate-value success">91.2%</span></td>
+                            <td><span class="rate-value">523</span></td>
                         </tr>
                     </tbody>
                 </table>
