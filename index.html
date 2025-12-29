@@ -132,7 +132,7 @@
         .notice-tag.balance { background: #fffbe6; color: #d48806; }
         .notice-content { flex: 1; font-size: 13px; }
         .notice-time { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
-        .data-overview { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        .data-overview { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
         .data-item { text-align: center; padding: 12px; background: #fafafa; border-radius: 4px; }
         .data-item-label { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 4px; }
         .data-item-value { font-size: 24px; font-weight: 500; }
@@ -245,8 +245,8 @@
         <div class="stats-row">
             <div class="stat-card online" onclick="showModal('onlineModal')">
                 <div class="stat-label">
-                    Online Airlines
-                    <span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">Online Airlines</div>The number of airlines currently available for normal use. These airlines are in normal operating status, and you can perform search, verification, and ticketing operations normally.<div class="tooltip-refresh">🔄 Refresh: Every 5 minutes, manual refresh supported</div></div></span>
+                    Operational Airlines
+                    <span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">Operational Airlines</div>The number of airlines currently operational. These airlines are operational and available for search, verification and ticketing operations.<div class="tooltip-refresh">🔄 Refresh: Every 5 minutes, manual refresh supported</div></div></span>
                 </div>
                 <div class="stat-value">47</div>
                 <div class="stat-sub">Click for details →</div>
@@ -254,15 +254,15 @@
             <div class="stat-card fault" onclick="showModal('faultModal')">
                 <div class="stat-label">
                     Under Maintenance
-                    <span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">Airlines Under Maintenance</div>The number of airlines currently unavailable. These airlines may be undergoing system maintenance or experiencing technical issues and temporarily cannot provide service.<div class="tooltip-refresh">🔄 Refresh: Every 5 minutes, manual refresh supported</div></div></span>
+                    <span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">Airlines Under Maintenance</div>The number of airlines currently unavailable. These airlines may be undergoing system maintenance or experiencing technical issues and temporarily unable to provide services.<div class="tooltip-refresh">🔄 Refresh: Every 5 minutes, manual refresh supported</div></div></span>
                 </div>
                 <div class="stat-value">3</div>
                 <div class="stat-sub">Click for details →</div>
             </div>
             <div class="stat-card warning" onclick="showModal('balanceModal')">
                 <div class="stat-label">
-                    Low Balance Airlines
-                    <span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">Low Balance Airlines</div>The number of airlines that may affect ticketing due to insufficient account balance. When an airline's balance falls below the warning threshold, ticketing may fail.<div class="tooltip-refresh">🔄 Refresh: Every 5 minutes, manual refresh supported</div></div></span>
+                    Low Balance Alerts
+                    <span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">Low Balance Alerts</div>The number of airlines that may affect ticketing due to insufficient account balance. When an airline's balance falls below the warning threshold, ticketing may fail.<div class="tooltip-refresh">🔄 Refresh: Every 5 minutes, manual refresh supported</div></div></span>
                 </div>
                 <div class="stat-value">2</div>
                 <div class="stat-sub">Click for details →</div>
@@ -293,7 +293,7 @@
             <div class="section-body">
                 <ul class="notice-list">
                     <li class="notice-item"><span class="notice-tag fault">Maintenance</span><span class="notice-content"><a href="airline-detail-en.html">Vueling (VY)</a> suspended due to data quality issues</span><span class="notice-time">2h ago</span></li>
-                    <li class="notice-item"><span class="notice-tag fault">Maintenance</span><span class="notice-content"><a href="airline-detail-en.html">Pegasus (PC)</a> API response abnormal</span><span class="notice-time">5h ago</span></li>
+                    <li class="notice-item"><span class="notice-tag fault">Maintenance</span><span class="notice-content"><a href="airline-detail-en.html">Pegasus (PC)</a> API response instability detected</span><span class="notice-time">5h ago</span></li>
                     <li class="notice-item"><span class="notice-tag balance">Balance</span><span class="notice-content"><a href="airline-detail-en.html">Ryanair (FR)</a> balance below warning threshold</span><span class="notice-time">1h ago</span></li>
                     <li class="notice-item"><span class="notice-tag recover">Recovered</span><span class="notice-content"><a href="airline-detail-en.html">Scoot (TR)</a> restored, outage lasted 3h</span><span class="notice-time">Yesterday</span></li>
                     <li class="notice-item"><span class="notice-tag new">New</span><span class="notice-content"><a href="airline-detail-en.html">Bamboo Airways (QH)</a> launched</span><span class="notice-time">3 days ago</span></li>
@@ -306,7 +306,7 @@
             <div class="section-header">
                 <div>
                     <div class="section-title">Platform Airline Rankings</div>
-                    <div class="section-subtitle">Atlas platform overall supply quality</div>
+                    <div class="section-subtitle">Overall airline supply quality on Atlas</div>
                 </div>
                 <div class="time-selector">
                     <button class="time-btn">Yesterday</button>
@@ -318,8 +318,8 @@
                     <!-- 验价成功率 Top10 -->
                     <div class="ranking-section">
                         <div class="ranking-label">
-                            Offer Verification Success Rate Top10
-                            <span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">Top 10 by Offer Verification Success Rate</div>The 10 airlines with the highest offer verification success rate on the Atlas platform.<div class="tooltip-refresh">🔄 Refresh: Daily at 14:00</div></div></span>
+                            Offer Verification Success Rate Top 10
+                            <span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">Offer Verification Success Rate Top 10</div>The 10 airlines with the highest offer verification success rate on Atlas.<div class="tooltip-refresh">🔄 Refresh: Daily at 14:00</div></div></span>
                         </div>
                         <ul class="ranking-list" id="verifyRateList">
                             <li class="ranking-item"><span class="ranking-num top-1">1</span><span class="ranking-name"><a href="airline-detail-en.html">IndiGo (6E)</a></span><span class="ranking-value success">98.5%</span></li>
@@ -336,8 +336,8 @@
                     <!-- 航司热门度排名 -->
                     <div class="ranking-section">
                         <div class="ranking-label">
-                            Airline Popularity Top10 (by orders)
-                            <span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">Airline Popularity Ranking</div>Popular airlines ranked by order volume.<div class="tooltip-refresh">🔄 Refresh: Daily at 14:00</div></div></span>
+                            Airline Popularity Top 10 (by orders)
+                            <span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">Airline Popularity Top 10</div>Popular airlines ranked by order volume on Atlas.<div class="tooltip-refresh">🔄 Refresh: Daily at 14:00</div></div></span>
                         </div>
                         <ul class="ranking-list" id="popularityList">
                             <li class="ranking-item"><span class="ranking-num top-1">1</span><span class="ranking-name"><a href="airline-detail-en.html">IndiGo (6E)</a></span></li>
@@ -354,8 +354,8 @@
                     <!-- 航线热门度排名 -->
                     <div class="ranking-section">
                         <div class="ranking-label">
-                            Route Popularity Top10 (by orders)
-                            <span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">Route Popularity Ranking</div>Popular routes ranked by order volume.<div class="tooltip-refresh">🔄 Refresh: Daily at 14:00</div></div></span>
+                            Route Popularity Top 10 (by orders)
+                            <span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">Route Popularity Top 10</div>Popular routes ranked by order volume.<div class="tooltip-refresh">🔄 Refresh: Daily at 14:00</div></div></span>
                         </div>
                         <ul class="ranking-list" id="routePopularityList">
                             <li class="ranking-item"><span class="ranking-num top-1">1</span><span class="ranking-name">DEL-BOM (Delhi-Mumbai)</span></li>
@@ -405,7 +405,7 @@
                         <div class="data-item-trend trend-down">↑ 0.8%</div>
                     </div>
                     <div class="data-item">
-                        <div class="data-item-label">Booking Success Rate<span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">My Overall Order Creation Success Rate</div>The percentage of successful order creations across all airlines.<div class="tooltip-refresh">🔄 Refresh: Daily at 14:00</div></div></span></div>
+                        <div class="data-item-label">Booking Success Rate<span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">My Overall Booking Success Rate</div>The percentage of successful order creations across all airlines.<div class="tooltip-refresh">🔄 Refresh: Daily at 14:00</div></div></span></div>
                         <div class="data-item-value" style="color: var(--success-color)">89.7%</div>
                         <div class="data-item-trend trend-up">↑ 0.5%</div>
                     </div>
@@ -429,8 +429,8 @@
                     </div>
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <select style="padding: 4px 8px; font-size: 12px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-white);">
-                            <option value="bottom5">Bottom5</option>
-                            <option value="top5">Top5</option>
+                            <option value="top5">Top 5</option>
+                            <option value="bottom5">Bottom 5</option>
                         </select>
                         <div class="time-selector">
                             <button class="time-btn">1h</button>
@@ -445,8 +445,8 @@
                         <div class="ranking-label">
                             Verify Success Rate
                             <select class="filter-select" style="margin-left: 8px; padding: 2px 8px; font-size: 12px;">
-                                <option value="top5">Top 5</option>
-                                <option value="bottom5" selected>Bottom 5</option>
+                                <option value="top5" selected>Top 5</option>
+                                <option value="bottom5">Bottom 5</option>
                             </select>
                             <span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">Airlines by Offer Verification Success Rate</div>Airlines with the highest/lowest verification success rates.<div class="tooltip-refresh">🔄 Refresh: Daily at 14:00</div></div></span>
                         </div>
@@ -462,10 +462,10 @@
                         <div class="ranking-label">
                             Booking Success Rate
                             <select class="filter-select" style="margin-left: 8px; padding: 2px 8px; font-size: 12px;">
-                                <option value="top5">Top 5</option>
-                                <option value="bottom5" selected>Bottom 5</option>
+                                <option value="top5" selected>Top 5</option>
+                                <option value="bottom5">Bottom 5</option>
                             </select>
-                            <span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">Airlines by Order Creation Success Rate</div>Airlines with the highest/lowest order creation success rates.<div class="tooltip-refresh">🔄 Refresh: Daily at 14:00</div></div></span>
+                            <span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">Airlines by Booking Success Rate</div>Airlines with the highest/lowest booking success rates.<div class="tooltip-refresh">🔄 Refresh: Daily at 14:00</div></div></span>
                         </div>
                         <ul class="ranking-list">
                             <li class="ranking-item"><span class="ranking-num" style="background:#fff2f0;color:#ff4d4f;">1</span><span class="ranking-name"><a href="airline-detail-en.html">Vueling (VY)</a></span><span class="ranking-value error">70.8%</span></li>
@@ -539,7 +539,7 @@
     <!-- Modals -->
     <div class="modal-overlay" id="onlineModal">
         <div class="modal">
-            <div class="modal-header"><span class="modal-title">Online Airlines (47)</span><button class="modal-close" onclick="hideModal('onlineModal')">×</button></div>
+            <div class="modal-header"><span class="modal-title">Operational Airlines (47)</span><button class="modal-close" onclick="hideModal('onlineModal')">×</button></div>
             <div class="modal-body">
                 <table class="simple-table">
                     <thead><tr><th>Airline Name</th><th>Status</th></tr></thead>
@@ -564,7 +564,7 @@
                     <thead><tr><th>Airline Name</th><th>Reason</th><th>Start Time</th></tr></thead>
                     <tbody>
                         <tr><td><a href="airline-detail-en.html">Vueling (VY)</a></td><td>Data quality issues</td><td>2025-12-11 12:30</td></tr>
-                        <tr><td><a href="airline-detail-en.html">Pegasus (PC)</a></td><td>API response abnormal</td><td>2025-12-11 09:15</td></tr>
+                        <tr><td><a href="airline-detail-en.html">Pegasus (PC)</a></td><td>API response instability detected</td><td>2025-12-11 09:15</td></tr>
                         <tr><td><a href="airline-detail-en.html">AirAsia (AK)</a></td><td>Manual closure</td><td>2025-12-11 08:00</td></tr>
                     </tbody>
                 </table>
@@ -574,7 +574,7 @@
 
     <div class="modal-overlay" id="balanceModal">
         <div class="modal">
-            <div class="modal-header"><span class="modal-title">Low Balance Airlines (2)</span><button class="modal-close" onclick="hideModal('balanceModal')">×</button></div>
+            <div class="modal-header"><span class="modal-title">Low Balance Alerts (2)</span><button class="modal-close" onclick="hideModal('balanceModal')">×</button></div>
             <div class="modal-body">
                 <table class="simple-table">
                     <thead><tr><th>Airline Name</th><th>Status</th></tr></thead>
@@ -595,7 +595,7 @@
                     <thead><tr><th style="width:100px;">Type</th><th>Content</th><th style="width:180px;">Time</th></tr></thead>
                     <tbody>
                         <tr><td><span class="notice-tag fault">Maintenance</span></td><td><a href="airline-detail-en.html">Vueling (VY)</a> suspended due to data quality issues</td><td>2h ago</td></tr>
-                        <tr><td><span class="notice-tag fault">Maintenance</span></td><td><a href="airline-detail-en.html">Pegasus (PC)</a> API response abnormal</td><td>5h ago</td></tbody>tr>
+                        <tr><td><span class="notice-tag fault">Maintenance</span></td><td><a href="airline-detail-en.html">Pegasus (PC)</a> API response instability detected</td><td>5h ago</td></tbody>tr>
                         <tr><td><span class="notice-tag balance">Balance</span></td><td><a href="airline-detail-en.html">Ryanair (FR)</a> balance below warning threshold</td><td>1h ago</td></tr>
                         <tr><td><span class="notice-tag recover">Recovered</span></td><td><a href="airline-detail-en.html">Scoot (TR)</a> restored, outage lasted 3h</td><td>Yesterday</td></tr>
                         <tr><td><span class="notice-tag new">New</span></td><td><a href="airline-detail-en.html">Bamboo Airways (QH)</a> launched</td><td>3 days ago</td></tr>
