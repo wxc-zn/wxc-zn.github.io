@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>通知策略 - 资料管理 - Atlas</title>
+<title>通知提醒 - 资料管理 - Atlas</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f6f8; color: #1d2129; font-size: 14px; line-height: 1.6; }
@@ -133,9 +133,6 @@
   .btn-primary { background: #2c4a7e; border-color: #2c4a7e; color: #fff; }
   .btn-primary:hover { background: #1d3a6b; border-color: #1d3a6b; color: #fff; }
 
-  /* ============ Banner ============ */
-  .info-banner { background: #f0f5ff; border-left: 3px solid #2c4a7e; padding: 12px 16px; border-radius: 4px; font-size: 13px; color: #4e5969; margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
-  .info-banner-icon { color: #2c4a7e; }
 </style>
 </head>
 <body>
@@ -181,24 +178,16 @@
       <span class="page-tab">用户信息</span>
       <span class="page-tab">企业信息</span>
       <span class="page-tab">认证设置</span>
-      <span class="page-tab active">通知策略</span>
+      <span class="page-tab active">通知提醒</span>
       <span class="page-tab">审计日志</span>
       <span class="page-tab">航司配置</span>
     </nav>
 
-    <!-- Info banner -->
-    <div class="info-banner">
-      <span class="info-banner-icon">ℹ️</span>
-      <span>新版航司状态通知策略 — 按原因订阅、按持续时长过滤，并自动避免未开通航司与无对应下线的恢复通知。</span>
-    </div>
-
-    <!-- Scenario tabs -->
+    <!-- Notification tabs -->
     <div class="scenario-bar">
-      <span class="scenario-tab active">航司状态<span class="badge-new">改版</span></span>
-      <span class="scenario-tab">出票</span>
-      <span class="scenario-tab">行程变更</span>
-      <span class="scenario-tab">取消通知</span>
-      <span class="scenario-tab">航司邮件</span>
+      <span class="scenario-tab">Webhook</span>
+      <span class="scenario-tab">邮件</span>
+      <span class="scenario-tab active">航司状态</span>
     </div>
 
     <div class="content-area">
