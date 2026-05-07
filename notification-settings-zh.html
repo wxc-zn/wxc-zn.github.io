@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>通知策略 - 资料管理 - Atlas</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f6f8; color: #1d2129; font-size: 14px; line-height: 1.6; }
+
+  /* ============ Top Header ============ */
+  .top-header { background: #fff; border-bottom: 1px solid #e5e6eb; height: 60px; display: flex; align-items: center; padding: 0 32px; position: sticky; top: 0; z-index: 100; }
+  .logo { font-size: 22px; font-weight: 700; color: #1d2129; margin-right: 8px; }
+  .logo-dot { color: #ffd234; }
+  .brand { font-size: 15px; font-weight: 600; color: #2c4a7e; margin: 0 32px 0 16px; }
+  .top-nav { display: flex; gap: 32px; flex: 1; }
+  .top-nav a { color: #4e5969; text-decoration: none; font-size: 14px; }
+  .top-nav a:hover { color: #2c4a7e; }
+  .top-right { display: flex; align-items: center; gap: 16px; }
+  .top-right .lang { padding: 6px 12px; border: 1px solid #e5e6eb; border-radius: 4px; font-size: 13px; }
+  .top-right .user { padding: 6px 12px; border: 1px solid #e5e6eb; border-radius: 4px; font-size: 13px; }
+
+  /* ============ Layout ============ */
+  .layout { display: flex; min-height: calc(100vh - 60px); }
+
+  /* ============ Sidebar ============ */
+  .sidebar { width: 200px; background: #2c4a7e; color: #fff; padding: 16px 0; flex-shrink: 0; }
+  .sidebar-item { padding: 12px 24px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 14px; }
+  .sidebar-item:hover { background: rgba(255,255,255,0.08); }
+  .sidebar-item.active { background: rgba(255,255,255,0.12); }
+  .sidebar-item.parent { font-weight: 500; }
+  .sidebar-sub { padding-left: 56px; padding-top: 8px; padding-bottom: 8px; font-size: 13px; cursor: pointer; }
+  .sidebar-sub:hover { color: #ffd234; }
+  .sidebar-sub.active { color: #ffd234; font-weight: 500; }
+  .sidebar-icon { width: 16px; height: 16px; opacity: 0.8; }
+
+  /* ============ Main ============ */
+  .main { flex: 1; padding: 32px 40px; overflow-x: auto; }
+  .page-title { font-size: 28px; font-weight: 600; color: #2c4a7e; margin-bottom: 24px; }
+
+  /* ============ Page Tabs ============ */
+  .page-tabs { display: flex; gap: 32px; border-bottom: 1px solid #e5e6eb; margin-bottom: 24px; }
+  .page-tab { padding: 12px 0; color: #4e5969; cursor: pointer; font-size: 15px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+  .page-tab:hover { color: #2c4a7e; }
+  .page-tab.active { color: #2c4a7e; border-bottom-color: #2c4a7e; font-weight: 500; }
+
+  /* ============ Scenario Tabs ============ */
+  .scenario-bar { background: #fff; border: 1px solid #e5e6eb; border-radius: 8px 8px 0 0; padding: 0 24px; display: flex; gap: 24px; }
+  .scenario-tab { padding: 16px 4px; cursor: pointer; color: #4e5969; font-size: 14px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+  .scenario-tab:hover { color: #2c4a7e; }
+  .scenario-tab.active { color: #2c4a7e; border-bottom-color: #2c4a7e; font-weight: 500; }
+  .scenario-tab .badge-new { display: inline-block; background: #f53f3f; color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 8px; margin-left: 4px; vertical-align: top; }
+
+  /* ============ Cards ============ */
+  .content-area { background: #fff; border: 1px solid #e5e6eb; border-top: none; border-radius: 0 0 8px 8px; padding: 32px; }
+  .card-section { margin-bottom: 40px; }
+  .card-section:last-child { margin-bottom: 0; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .section-title { font-size: 16px; font-weight: 600; color: #1d2129; display: flex; align-items: center; gap: 8px; }
+  .section-step { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; background: #2c4a7e; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; }
+  .section-desc { color: #86909c; font-size: 13px; margin-bottom: 20px; }
+
+  /* ============ Reason List ============ */
+  .reason-list { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .reason-item { border: 1px solid #e5e6eb; border-radius: 6px; padding: 14px 16px; cursor: pointer; transition: all 0.15s; display: flex; align-items: flex-start; gap: 12px; }
+  .reason-item:hover { border-color: #2c4a7e; background: #f7faff; }
+  .reason-item.checked { border-color: #2c4a7e; background: #f0f5ff; }
+  .reason-checkbox { margin-top: 2px; width: 16px; height: 16px; flex-shrink: 0; accent-color: #2c4a7e; }
+  .reason-body { flex: 1; }
+  .reason-title { font-weight: 500; color: #1d2129; display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .reason-tag { font-size: 11px; padding: 1px 6px; border-radius: 3px; font-weight: 400; }
+  .tag-eta-yes { background: #e8f7e8; color: #1f8e3d; }
+  .tag-eta-no { background: #fdf3e6; color: #d46b00; }
+  .tag-warning { background: #fff1f0; color: #d92d20; }
+  .reason-desc { color: #86909c; font-size: 13px; }
+
+  /* ============ Form Rows ============ */
+  .form-row { display: flex; align-items: flex-start; padding: 16px 0; border-top: 1px solid #f0f1f3; }
+  .form-row:first-child { border-top: none; }
+  .form-label { width: 140px; flex-shrink: 0; font-weight: 500; color: #1d2129; padding-top: 6px; }
+  .form-label .required { color: #f53f3f; margin-right: 4px; }
+  .form-content { flex: 1; }
+  .form-hint { color: #86909c; font-size: 13px; margin-top: 6px; }
+  .readonly-rule { background: #fafbfc; border: 1px solid #e5e6eb; border-radius: 6px; padding: 12px 14px; color: #4e5969; }
+  .readonly-rule strong { color: #1d2129; font-weight: 600; }
+  .rule-list { margin-top: 8px; padding-left: 18px; color: #86909c; font-size: 13px; }
+  .input-num { width: 100px; padding: 6px 12px; border: 1px solid #c9cdd4; border-radius: 4px; font-size: 14px; }
+  .input-text { width: 100%; padding: 8px 12px; border: 1px solid #c9cdd4; border-radius: 4px; font-size: 14px; }
+  .unit { color: #4e5969; margin-left: 8px; }
+
+  /* ============ Tag List (airlines) ============ */
+  .tag-list { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .airline-tag { background: #f0f5ff; color: #2c4a7e; padding: 5px 10px; border-radius: 4px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; }
+  .airline-tag .close { cursor: pointer; color: #86909c; font-size: 14px; line-height: 1; }
+  .airline-tag .close:hover { color: #f53f3f; }
+  .airline-tag.block { background: #fff1f0; color: #d92d20; }
+  .add-tag-btn { background: #fff; border: 1px dashed #c9cdd4; border-radius: 4px; padding: 5px 12px; font-size: 13px; color: #4e5969; cursor: pointer; }
+  .add-tag-btn:hover { border-color: #2c4a7e; color: #2c4a7e; }
+
+  /* ============ Channel Cards ============ */
+  .channel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .channel-card { border: 1px solid #e5e6eb; border-radius: 6px; padding: 20px; }
+  .channel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .channel-name { font-weight: 600; color: #1d2129; display: flex; align-items: center; gap: 8px; }
+  .channel-icon { font-size: 18px; }
+  .channel-tag { display: inline-block; background: #f0f5ff; color: #2c4a7e; padding: 1px 6px; border-radius: 3px; font-size: 11px; font-weight: 500; }
+  .channel-toggle { position: relative; width: 36px; height: 20px; background: #c9cdd4; border-radius: 10px; cursor: pointer; transition: 0.2s; }
+  .channel-toggle.on { background: #2c4a7e; }
+  .channel-toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: #fff; border-radius: 50%; transition: 0.2s; }
+  .channel-toggle.on::after { left: 18px; }
+  .channel-body { font-size: 13px; color: #4e5969; }
+  .channel-status { font-size: 12px; color: #86909c; margin-top: 4px; }
+  .email-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .email-row .input-text { flex: 1; }
+  .email-action { width: 24px; height: 24px; border-radius: 50%; border: none; cursor: pointer; font-size: 16px; line-height: 1; }
+  .btn-add { background: #f0f5ff; color: #2c4a7e; }
+  .btn-del { background: #fff1f0; color: #f53f3f; }
+  .small-link { font-size: 13px; color: #2c4a7e; cursor: pointer; }
+  .small-link:hover { text-decoration: underline; }
+  .bot-preview { margin-top: 10px; border: 1px solid #e5e6eb; border-radius: 6px; background: #fafbfc; overflow: hidden; }
+  .bot-preview-head { padding: 8px 10px; background: #f0f5ff; color: #2c4a7e; font-size: 12px; font-weight: 600; }
+  .bot-preview-body { padding: 10px; font-size: 12px; color: #4e5969; }
+  .bot-preview-title { color: #1d2129; font-weight: 600; margin-bottom: 6px; }
+  .bot-preview-line { display: flex; justify-content: space-between; gap: 12px; padding: 3px 0; border-bottom: 1px solid #f0f1f3; }
+  .bot-preview-line:last-child { border-bottom: none; }
+  .bot-preview-key { color: #86909c; }
+  .bot-preview-actions { display: flex; gap: 8px; margin-top: 10px; }
+  .bot-preview-btn { flex: 1; text-align: center; border: 1px solid #2c4a7e; color: #2c4a7e; border-radius: 4px; padding: 5px 8px; background: #fff; font-size: 12px; }
+
+  /* ============ Footer Actions ============ */
+  .footer-actions { margin-top: 24px; display: flex; gap: 12px; justify-content: flex-end; padding: 20px 0; border-top: 1px solid #e5e6eb; }
+  .btn { padding: 8px 24px; border-radius: 4px; font-size: 14px; cursor: pointer; border: 1px solid #c9cdd4; background: #fff; color: #4e5969; }
+  .btn:hover { border-color: #2c4a7e; color: #2c4a7e; }
+  .btn-primary { background: #2c4a7e; border-color: #2c4a7e; color: #fff; }
+  .btn-primary:hover { background: #1d3a6b; border-color: #1d3a6b; color: #fff; }
+
+  /* ============ Banner ============ */
+  .info-banner { background: #f0f5ff; border-left: 3px solid #2c4a7e; padding: 12px 16px; border-radius: 4px; font-size: 13px; color: #4e5969; margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+  .info-banner-icon { color: #2c4a7e; }
+</style>
+</head>
+<body>
+
+<!-- Top Header -->
+<header class="top-header">
+  <span class="logo">atlas<span class="logo-dot">.</span></span>
+  <span class="brand">ATRIP</span>
+  <nav class="top-nav">
+    <a href="#">产品介绍</a>
+    <a href="#">帮助中心</a>
+    <a href="#">API 文档</a>
+  </nav>
+  <div class="top-right">
+    <span class="lang">🌐 中文 ▾</span>
+    <span class="user">👤 YICHEN (Atrip USD(Test)) ▾</span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-item">🔍 搜索票价</div>
+    <div class="sidebar-item">📝 手工订票</div>
+    <div class="sidebar-item">📊 数据看板</div>
+    <div class="sidebar-item">📦 订单中心</div>
+    <div class="sidebar-item">📋 服务工单</div>
+    <div class="sidebar-item">🛒 OTA直连店铺</div>
+    <div class="sidebar-item">💳 托管付</div>
+    <div class="sidebar-item">💰 财务管理</div>
+    <div class="sidebar-item parent active">👤 账户中心</div>
+    <div class="sidebar-sub active">资料管理</div>
+    <div class="sidebar-sub">账号管理</div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <h1 class="page-title">资料管理</h1>
+
+    <!-- Page tabs -->
+    <nav class="page-tabs">
+      <span class="page-tab">用户信息</span>
+      <span class="page-tab">企业信息</span>
+      <span class="page-tab">认证设置</span>
+      <span class="page-tab active">通知策略</span>
+      <span class="page-tab">审计日志</span>
+      <span class="page-tab">航司配置</span>
+    </nav>
+
+    <!-- Info banner -->
+    <div class="info-banner">
+      <span class="info-banner-icon">ℹ️</span>
+      <span>新版航司状态通知策略 — 按原因订阅、按持续时长过滤，并自动避免未开通航司与无对应下线的恢复通知。</span>
+    </div>
+
+    <!-- Scenario tabs -->
+    <div class="scenario-bar">
+      <span class="scenario-tab active">航司状态<span class="badge-new">改版</span></span>
+      <span class="scenario-tab">出票</span>
+      <span class="scenario-tab">行程变更</span>
+      <span class="scenario-tab">取消通知</span>
+      <span class="scenario-tab">航司邮件</span>
+    </div>
+
+    <div class="content-area">
+
+      <!-- ===== Section 1: 订阅原因 ===== -->
+      <section class="card-section">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="section-step">1</span>
+            订阅原因
+          </h2>
+        </div>
+        <p class="section-desc">勾选您希望接收通知的下线原因类型；不同类型对应不同的恢复时长预期与建议处理方式。</p>
+
+        <ul class="reason-list">
+
+          <li class="reason-item checked">
+            <input type="checkbox" class="reason-checkbox" checked>
+            <div class="reason-body">
+              <div class="reason-title">数据质量 <span class="reason-tag tag-eta-no">无明确恢复时间</span></div>
+              <div class="reason-desc">航司数据采集 / 验价 / 缓存异常</div>
+            </div>
+          </li>
+
+          <li class="reason-item checked">
+            <input type="checkbox" class="reason-checkbox" checked>
+            <div class="reason-body">
+              <div class="reason-title">余额不足 <span class="reason-tag tag-warning">等待充值</span></div>
+              <div class="reason-desc">航司账户余额不足导致下线</div>
+            </div>
+          </li>
+
+          <li class="reason-item checked">
+            <input type="checkbox" class="reason-checkbox" checked>
+            <div class="reason-body">
+              <div class="reason-title">定时维护 <span class="reason-tag tag-eta-yes">精确恢复时间</span></div>
+              <div class="reason-desc">航司每日定时关闭，到点自动恢复</div>
+            </div>
+          </li>
+
+          <li class="reason-item checked">
+            <input type="checkbox" class="reason-checkbox" checked>
+            <div class="reason-body">
+              <div class="reason-title">L2B 超限被屏蔽 <span class="reason-tag tag-eta-yes">精确恢复时间</span></div>
+              <div class="reason-desc">查定比超出限制触发屏蔽</div>
+            </div>
+          </li>
+
+          <li class="reason-item checked">
+            <input type="checkbox" class="reason-checkbox" checked>
+            <div class="reason-body">
+              <div class="reason-title">系统问题 <span class="reason-tag tag-eta-no">无明确恢复时间</span></div>
+              <div class="reason-desc">人工关闭、系统异常等</div>
+            </div>
+          </li>
+
+        </ul>
+      </section>
+
+      <!-- ===== Section 2: 触发规则 ===== -->
+      <section class="card-section">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="section-step">2</span>
+            触发规则
+          </h2>
+        </div>
+
+        <div class="form-row">
+          <div class="form-label"><span class="required">*</span>持续时长阈值</div>
+          <div class="form-content">
+            <select class="input-num">
+              <option value="0">0</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="40">40</option>
+              <option value="50">50</option>
+              <option value="60" selected>60</option>
+            </select>
+            <span class="unit">分钟</span>
+            <div class="form-hint">下线持续超过此时长才推送通知（避免短时抖动打扰）。</div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-label">只通知已关注航司</div>
+          <div class="form-content">
+            <div class="channel-toggle" title="否"></div>
+            <div class="form-hint">开关打开后只对已经关注的航司的状态变化进行通知。</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Section 3: 通知渠道 ===== -->
+      <section class="card-section">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="section-step">3</span>
+            通知渠道
+          </h2>
+        </div>
+        <p class="section-desc">选择通知的接收方式，可同时启用多个渠道。</p>
+
+        <div class="channel-grid">
+
+          <!-- 邮件 -->
+          <div class="channel-card">
+            <div class="channel-head">
+              <div class="channel-name"><span class="channel-icon">📧</span> 邮件</div>
+              <div class="channel-toggle on" title="已启用"></div>
+            </div>
+            <div class="channel-body">
+              <div class="email-row">
+                <input type="text" class="input-text" value="yi.li@atlaslovestravel.com">
+                <button class="email-action btn-del">−</button>
+              </div>
+              <div class="email-row">
+                <input type="text" class="input-text" value="sumon.mittra@atlaslovestravel.com">
+                <button class="email-action btn-del">−</button>
+              </div>
+              <div class="email-row">
+                <input type="text" class="input-text" value="standie.nagadi@atlaslovestravel.com">
+                <button class="email-action btn-add">+</button>
+                <button class="email-action btn-del">−</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 开发者 Webhook -->
+          <div class="channel-card">
+            <div class="channel-head">
+              <div class="channel-name"><span class="channel-icon">🔗</span> 开发者 Webhook <span class="channel-tag">系统集成</span></div>
+              <div class="channel-toggle on" title="已启用"></div>
+            </div>
+            <div class="channel-body">
+              <input type="text" class="input-text" placeholder="https://your-domain.com/webhook" value="https://hooks.example.com/atrip/airline-status" style="margin-bottom:8px;">
+              <div class="email-row" style="gap:12px;">
+                <span class="small-link">▶ 测试推送</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 钉钉群机器人 -->
+          <div class="channel-card">
+            <div class="channel-head">
+              <div class="channel-name"><span class="channel-icon">💬</span> 钉钉群机器人 <span class="channel-tag">群通知</span></div>
+              <div class="channel-toggle on" title="已启用"></div>
+            </div>
+            <div class="channel-body">
+              <input type="text" class="input-text" placeholder="https://oapi.dingtalk.com/robot/send?access_token=..." value="https://oapi.dingtalk.com/robot/send?access_token=..." style="margin-bottom:8px;">
+              <input type="text" class="input-text" placeholder="加签 Secret（如机器人启用加签）" value="SECxxxxxxxx" style="margin-bottom:8px;">
+              <div class="email-row" style="gap:12px;">
+                <span class="small-link">▶ 测试推送</span>
+              </div>
+              <div class="channel-status">客户在钉钉群创建自定义机器人后粘贴 URL</div>
+              <div class="bot-preview">
+                <div class="bot-preview-head">钉钉 ActionCard</div>
+                <div class="bot-preview-body">
+                  <div class="bot-preview-title">航司状态变更通知</div>
+                  <div class="bot-preview-line"><span class="bot-preview-key">航司</span><span>伏林航空，VY</span></div>
+                  <div class="bot-preview-line"><span class="bot-preview-key">开始时间</span><span>2026-04-22 06:24</span></div>
+                  <div class="bot-preview-line"><span class="bot-preview-key">原因</span><span>数据质量</span></div>
+                  <div class="bot-preview-line"><span class="bot-preview-key">ETA</span><span>待定</span></div>
+                  <div class="bot-preview-line"><span class="bot-preview-key">影响范围</span><span>该航司全部航线</span></div>
+                  <div class="bot-preview-line"><span class="bot-preview-key">建议</span><span>使用其他在线航司</span></div>
+                  <div class="bot-preview-actions">
+                    <span class="bot-preview-btn">查看详情</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 企微群机器人 -->
+          <div class="channel-card">
+            <div class="channel-head">
+              <div class="channel-name"><span class="channel-icon">💬</span> 企微群机器人 <span class="channel-tag">群通知</span></div>
+              <div class="channel-toggle" title="未启用"></div>
+            </div>
+            <div class="channel-body">
+              <input type="text" class="input-text" placeholder="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=..." style="margin-bottom:8px;">
+              <div class="email-row" style="gap:12px;">
+                <span class="small-link">▶ 测试推送</span>
+              </div>
+              <div class="channel-status">客户在企微群创建群机器人后粘贴 URL</div>
+              <div class="bot-preview">
+                <div class="bot-preview-head">企微 template_card</div>
+                <div class="bot-preview-body">
+                  <div class="bot-preview-title">[维护中] 伏林航空 VY</div>
+                  <div class="bot-preview-line"><span class="bot-preview-key">航司</span><span>伏林航空，VY</span></div>
+                  <div class="bot-preview-line"><span class="bot-preview-key">开始时间</span><span>2026-04-22 06:24</span></div>
+                  <div class="bot-preview-line"><span class="bot-preview-key">原因</span><span>数据质量</span></div>
+                  <div class="bot-preview-line"><span class="bot-preview-key">ETA</span><span>待定</span></div>
+                  <div class="bot-preview-line"><span class="bot-preview-key">影响范围</span><span>该航司全部航线</span></div>
+                  <div class="bot-preview-line"><span class="bot-preview-key">建议</span><span>使用其他在线航司</span></div>
+                  <div class="bot-preview-actions">
+                    <span class="bot-preview-btn">查看详情</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Footer Actions -->
+      <div class="footer-actions">
+        <button class="btn">取消</button>
+        <button class="btn btn-primary">保存配置</button>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // 简单交互演示
+  document.querySelectorAll('.reason-item').forEach(item => {
+    item.addEventListener('click', e => {
+      if (e.target.tagName === 'INPUT') return;
+      const cb = item.querySelector('.reason-checkbox');
+      cb.checked = !cb.checked;
+      item.classList.toggle('checked', cb.checked);
+    });
+  });
+
+  document.querySelectorAll('.channel-toggle').forEach(t => {
+    t.addEventListener('click', () => {
+      t.classList.toggle('on');
+    });
+  });
+</script>
+
+</body>
+</html>
