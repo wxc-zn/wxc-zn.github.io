@@ -185,79 +185,66 @@
 
     <!-- Notification tabs -->
     <div class="scenario-bar">
-      <span class="scenario-tab">Webhook</span>
-      <span class="scenario-tab">邮件</span>
-      <span class="scenario-tab active">航司状态</span>
+      <span class="scenario-tab active" data-channel="webhook">Webhook</span>
+      <span class="scenario-tab" data-channel="email">邮件</span>
+      <span class="scenario-tab" data-channel="dingtalk">钉钉</span>
+      <span class="scenario-tab" data-channel="wecom">企微</span>
+      <span class="scenario-tab" data-channel="slack">Slack</span>
+      <span class="scenario-tab" data-channel="teams">Teams</span>
     </div>
 
     <div class="content-area">
 
-      <!-- ===== Section 1: 订阅原因 ===== -->
+      <!-- ===== Section 1: 渠道配置 ===== -->
       <section class="card-section">
         <div class="section-header">
           <h2 class="section-title">
             <span class="section-step">1</span>
-            订阅原因
+            <span id="channelTitle">Webhook 渠道配置</span>
           </h2>
         </div>
-        <p class="section-desc">勾选您希望接收通知的下线原因类型；不同类型对应不同的恢复时长预期与建议处理方式。</p>
-
-        <ul class="reason-list">
-
-          <li class="reason-item checked">
-            <input type="checkbox" class="reason-checkbox" checked>
-            <div class="reason-body">
-              <div class="reason-title">数据质量 <span class="reason-tag tag-eta-no">无明确恢复时间</span></div>
-              <div class="reason-desc">航司数据采集 / 验价 / 缓存异常</div>
-            </div>
-          </li>
-
-          <li class="reason-item checked">
-            <input type="checkbox" class="reason-checkbox" checked>
-            <div class="reason-body">
-              <div class="reason-title">余额不足 <span class="reason-tag tag-warning">等待充值</span></div>
-              <div class="reason-desc">航司账户余额不足导致下线</div>
-            </div>
-          </li>
-
-          <li class="reason-item checked">
-            <input type="checkbox" class="reason-checkbox" checked>
-            <div class="reason-body">
-              <div class="reason-title">定时维护 <span class="reason-tag tag-eta-yes">精确恢复时间</span></div>
-              <div class="reason-desc">航司每日定时关闭，到点自动恢复</div>
-            </div>
-          </li>
-
-          <li class="reason-item checked">
-            <input type="checkbox" class="reason-checkbox" checked>
-            <div class="reason-body">
-              <div class="reason-title">L2B 超限被屏蔽 <span class="reason-tag tag-eta-yes">精确恢复时间</span></div>
-              <div class="reason-desc">查定比超出限制触发屏蔽</div>
-            </div>
-          </li>
-
-          <li class="reason-item checked">
-            <input type="checkbox" class="reason-checkbox" checked>
-            <div class="reason-body">
-              <div class="reason-title">系统问题 <span class="reason-tag tag-eta-no">无明确恢复时间</span></div>
-              <div class="reason-desc">人工关闭、系统异常等</div>
-            </div>
-          </li>
-
-        </ul>
+        <p class="section-desc" id="channelDesc">Webhook 面向客户系统/程序，Atrip 将发送结构化 JSON，由客户系统自行处理或转发。</p>
+        <div id="channelFields"></div>
       </section>
 
-      <!-- ===== Section 2: 触发规则 ===== -->
+      <!-- ===== Section 2: 航司状态通知 ===== -->
       <section class="card-section">
         <div class="section-header">
           <h2 class="section-title">
             <span class="section-step">2</span>
-            触发规则
+            航司状态通知
           </h2>
         </div>
 
         <div class="form-row">
-          <div class="form-label"><span class="required">*</span>持续时长阈值</div>
+          <div class="form-label">通知开关</div>
+          <div class="form-content">
+            <div class="channel-toggle on" title="已启用"></div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-label">通知类型</div>
+          <div class="form-content">
+            <div class="readonly-rule">
+              数据质量、系统问题、余额不足、定时维护、业务转化比超限
+            </div>
+            <div class="form-hint">所有航司状态类型默认通知，无需单独选择。</div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-label">通知范围</div>
+          <div class="form-content">
+            <div class="readonly-rule">
+              仅通知已关注航司
+            </div>
+            <div class="form-hint">该规则与当前线上通知规则保持一致，暂不支持关闭。</div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-label">持续时长阈值</div>
           <div class="form-content">
             <select class="input-num">
               <option value="0">0</option>
@@ -271,127 +258,6 @@
             <span class="unit">分钟</span>
             <div class="form-hint">下线持续超过此时长才推送通知（避免短时抖动打扰）。</div>
           </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-label">只通知已关注航司</div>
-          <div class="form-content">
-            <div class="channel-toggle" title="否"></div>
-            <div class="form-hint">开关打开后只对已经关注的航司的状态变化进行通知。</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ===== Section 3: 通知渠道 ===== -->
-      <section class="card-section">
-        <div class="section-header">
-          <h2 class="section-title">
-            <span class="section-step">3</span>
-            通知渠道
-          </h2>
-        </div>
-        <p class="section-desc">选择通知的接收方式，可同时启用多个渠道。</p>
-
-        <div class="channel-grid">
-
-          <!-- 邮件 -->
-          <div class="channel-card">
-            <div class="channel-head">
-              <div class="channel-name"><span class="channel-icon">📧</span> 邮件</div>
-              <div class="channel-toggle on" title="已启用"></div>
-            </div>
-            <div class="channel-body">
-              <div class="email-row">
-                <input type="text" class="input-text" value="yi.li@atlaslovestravel.com">
-                <button class="email-action btn-del">−</button>
-              </div>
-              <div class="email-row">
-                <input type="text" class="input-text" value="sumon.mittra@atlaslovestravel.com">
-                <button class="email-action btn-del">−</button>
-              </div>
-              <div class="email-row">
-                <input type="text" class="input-text" value="standie.nagadi@atlaslovestravel.com">
-                <button class="email-action btn-add">+</button>
-                <button class="email-action btn-del">−</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- 开发者 Webhook -->
-          <div class="channel-card">
-            <div class="channel-head">
-              <div class="channel-name"><span class="channel-icon">🔗</span> 开发者 Webhook <span class="channel-tag">系统集成</span></div>
-              <div class="channel-toggle on" title="已启用"></div>
-            </div>
-            <div class="channel-body">
-              <input type="text" class="input-text" placeholder="https://your-domain.com/webhook" value="https://hooks.example.com/atrip/airline-status" style="margin-bottom:8px;">
-              <div class="email-row" style="gap:12px;">
-                <span class="small-link">▶ 测试推送</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 钉钉群机器人 -->
-          <div class="channel-card">
-            <div class="channel-head">
-              <div class="channel-name"><span class="channel-icon">💬</span> 钉钉群机器人 <span class="channel-tag">群通知</span></div>
-              <div class="channel-toggle on" title="已启用"></div>
-            </div>
-            <div class="channel-body">
-              <input type="text" class="input-text" placeholder="https://oapi.dingtalk.com/robot/send?access_token=..." value="https://oapi.dingtalk.com/robot/send?access_token=..." style="margin-bottom:8px;">
-              <input type="text" class="input-text" placeholder="加签 Secret（如机器人启用加签）" value="SECxxxxxxxx" style="margin-bottom:8px;">
-              <div class="email-row" style="gap:12px;">
-                <span class="small-link">▶ 测试推送</span>
-              </div>
-              <div class="channel-status">客户在钉钉群创建自定义机器人后粘贴 URL</div>
-              <div class="bot-preview">
-                <div class="bot-preview-head">钉钉 ActionCard</div>
-                <div class="bot-preview-body">
-                  <div class="bot-preview-title">航司状态变更通知</div>
-                  <div class="bot-preview-line"><span class="bot-preview-key">航司</span><span>伏林航空，VY</span></div>
-                  <div class="bot-preview-line"><span class="bot-preview-key">开始时间</span><span>2026-04-22 06:24</span></div>
-                  <div class="bot-preview-line"><span class="bot-preview-key">原因</span><span>数据质量</span></div>
-                  <div class="bot-preview-line"><span class="bot-preview-key">ETA</span><span>待定</span></div>
-                  <div class="bot-preview-line"><span class="bot-preview-key">影响范围</span><span>该航司全部航线</span></div>
-                  <div class="bot-preview-line"><span class="bot-preview-key">建议</span><span>使用其他在线航司</span></div>
-                  <div class="bot-preview-actions">
-                    <span class="bot-preview-btn">查看详情</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 企微群机器人 -->
-          <div class="channel-card">
-            <div class="channel-head">
-              <div class="channel-name"><span class="channel-icon">💬</span> 企微群机器人 <span class="channel-tag">群通知</span></div>
-              <div class="channel-toggle" title="未启用"></div>
-            </div>
-            <div class="channel-body">
-              <input type="text" class="input-text" placeholder="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=..." style="margin-bottom:8px;">
-              <div class="email-row" style="gap:12px;">
-                <span class="small-link">▶ 测试推送</span>
-              </div>
-              <div class="channel-status">客户在企微群创建群机器人后粘贴 URL</div>
-              <div class="bot-preview">
-                <div class="bot-preview-head">企微 template_card</div>
-                <div class="bot-preview-body">
-                  <div class="bot-preview-title">[维护中] 伏林航空 VY</div>
-                  <div class="bot-preview-line"><span class="bot-preview-key">航司</span><span>伏林航空，VY</span></div>
-                  <div class="bot-preview-line"><span class="bot-preview-key">开始时间</span><span>2026-04-22 06:24</span></div>
-                  <div class="bot-preview-line"><span class="bot-preview-key">原因</span><span>数据质量</span></div>
-                  <div class="bot-preview-line"><span class="bot-preview-key">ETA</span><span>待定</span></div>
-                  <div class="bot-preview-line"><span class="bot-preview-key">影响范围</span><span>该航司全部航线</span></div>
-                  <div class="bot-preview-line"><span class="bot-preview-key">建议</span><span>使用其他在线航司</span></div>
-                  <div class="bot-preview-actions">
-                    <span class="bot-preview-btn">查看详情</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
       </section>
 
@@ -407,15 +273,153 @@
 </div>
 
 <script>
-  // 简单交互演示
-  document.querySelectorAll('.reason-item').forEach(item => {
-    item.addEventListener('click', e => {
-      if (e.target.tagName === 'INPUT') return;
-      const cb = item.querySelector('.reason-checkbox');
-      cb.checked = !cb.checked;
-      item.classList.toggle('checked', cb.checked);
+  const channelConfigs = {
+    webhook: {
+      title: 'Webhook 渠道配置',
+      desc: 'Webhook 面向客户系统/程序，Atrip 将发送结构化 JSON，由客户系统自行处理或转发。',
+      fields: `
+        <div class="form-row">
+          <div class="form-label">Webhook URL</div>
+          <div class="form-content">
+            <input type="text" class="input-text" placeholder="https://your-domain.com/webhook" value="https://hooks.example.com/atrip/airline-status">
+            <div class="form-hint">用于接收航司状态通知的客户系统地址。</div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-label">测试推送</div>
+          <div class="form-content"><span class="small-link">▶ 发送测试通知</span></div>
+        </div>
+      `
+    },
+    email: {
+      title: '邮件渠道配置',
+      desc: '通过邮件发送航司状态通知，邮件正文使用 HTML 排版并包含查看详情入口。',
+      fields: `
+        <div class="form-row">
+          <div class="form-label">收件人</div>
+          <div class="form-content">
+            <div class="email-row"><input type="text" class="input-text" value="yi.li@atlaslovestravel.com"><button class="email-action btn-del">−</button></div>
+            <div class="email-row"><input type="text" class="input-text" value="sumon.mittra@atlaslovestravel.com"><button class="email-action btn-del">−</button></div>
+            <div class="email-row"><input type="text" class="input-text" value="standie.nagadi@atlaslovestravel.com"><button class="email-action btn-add">+</button><button class="email-action btn-del">−</button></div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-label">测试推送</div>
+          <div class="form-content"><span class="small-link">▶ 发送测试通知</span></div>
+        </div>
+      `
+    },
+    dingtalk: {
+      title: '钉钉渠道配置',
+      desc: '推荐客户创建钉钉企业内部机器人；存量自定义机器人可继续使用。配置机器人 Webhook 后接收卡片通知。',
+      fields: `
+        <div class="form-row">
+          <div class="form-label">Webhook URL</div>
+          <div class="form-content">
+            <input type="text" class="input-text" placeholder="https://oapi.dingtalk.com/robot/send?access_token=...">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-label">加签 Secret</div>
+          <div class="form-content">
+            <input type="text" class="input-text" placeholder="如机器人启用加签，请填写 Secret">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-label">测试推送</div>
+          <div class="form-content"><span class="small-link">▶ 发送测试通知</span></div>
+        </div>
+        ${botPreview('钉钉 ActionCard', '航司状态变更通知')}
+      `
+    },
+    wecom: {
+      title: '企微渠道配置',
+      desc: '客户在企微群创建群机器人，将机器人 Webhook URL 配置到 Atrip 后接收卡片通知。',
+      fields: `
+        <div class="form-row">
+          <div class="form-label">Webhook URL</div>
+          <div class="form-content">
+            <input type="text" class="input-text" placeholder="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=...">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-label">测试推送</div>
+          <div class="form-content"><span class="small-link">▶ 发送测试通知</span></div>
+        </div>
+        ${botPreview('企微 template_card', '[维护中] 伏林航空 VY')}
+      `
+    },
+    slack: {
+      title: 'Slack 渠道配置',
+      desc: '客户需先将 Atrip Slack App 加入目标 channel，再填写 Channel ID 接收通知。',
+      fields: `
+        <div class="form-row">
+          <div class="form-label">Channel ID</div>
+          <div class="form-content">
+            <input type="text" class="input-text" placeholder="C0XXXXXXXXX" value="C0AB3GUPJTG">
+            <div class="form-hint">Bot Token 由 Atrip 统一维护；每个客户配置自己的通知 Channel ID。</div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-label">测试推送</div>
+          <div class="form-content"><span class="small-link">▶ 发送测试通知</span></div>
+        </div>
+        ${botPreview('Slack Block Kit', '航司状态变更通知')}
+      `
+    },
+    teams: {
+      title: 'Teams 渠道配置',
+      desc: '客户在 Teams 群聊或频道中创建 Workflow Webhook，Atrip 按 Adaptive Card 格式发送通知。',
+      fields: `
+        <div class="form-row">
+          <div class="form-label">Workflow URL</div>
+          <div class="form-content">
+            <input type="text" class="input-text" placeholder="https://...powerplatform.com/.../workflows/...">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-label">测试推送</div>
+          <div class="form-content"><span class="small-link">▶ 发送测试通知</span></div>
+        </div>
+        ${botPreview('Teams Adaptive Card', '航司状态通知测试')}
+      `
+    }
+  };
+
+  function botPreview(head, title) {
+    return `
+      <div class="bot-preview">
+        <div class="bot-preview-head">${head}</div>
+        <div class="bot-preview-body">
+          <div class="bot-preview-title">${title}</div>
+          <div class="bot-preview-line"><span class="bot-preview-key">航司</span><span>伏林航空，VY</span></div>
+          <div class="bot-preview-line"><span class="bot-preview-key">开始时间</span><span>2026-04-22 06:24</span></div>
+          <div class="bot-preview-line"><span class="bot-preview-key">原因</span><span>数据质量</span></div>
+          <div class="bot-preview-line"><span class="bot-preview-key">ETA</span><span>待定</span></div>
+          <div class="bot-preview-line"><span class="bot-preview-key">影响范围</span><span>该航司全部航线</span></div>
+          <div class="bot-preview-line"><span class="bot-preview-key">建议</span><span>使用其他在线航司</span></div>
+          <div class="bot-preview-actions"><span class="bot-preview-btn">查看详情</span></div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderChannel(channel) {
+    const config = channelConfigs[channel] || channelConfigs.webhook;
+    document.getElementById('channelTitle').textContent = config.title;
+    document.getElementById('channelDesc').textContent = config.desc;
+    document.getElementById('channelFields').innerHTML = config.fields;
+  }
+
+  document.querySelectorAll('.scenario-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.scenario-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      renderChannel(tab.dataset.channel);
     });
   });
+
+  renderChannel('webhook');
 
   document.querySelectorAll('.channel-toggle').forEach(t => {
     t.addEventListener('click', () => {
