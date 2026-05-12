@@ -82,9 +82,12 @@
   .form-hint { color: #86909c; font-size: 13px; margin-top: 6px; }
   .readonly-rule { background: #fafbfc; border: 1px solid #e5e6eb; border-radius: 6px; padding: 12px 14px; color: #4e5969; }
   .readonly-rule strong { color: #1d2129; font-weight: 600; }
+  .readonly-rule.with-action { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
   .rule-list { margin-top: 8px; padding-left: 18px; color: #86909c; font-size: 13px; }
   .input-num { width: 100px; padding: 6px 12px; border: 1px solid #c9cdd4; border-radius: 4px; font-size: 14px; }
   .input-text { width: 100%; padding: 8px 12px; border: 1px solid #c9cdd4; border-radius: 4px; font-size: 14px; }
+  .input-with-action { display: flex; align-items: center; gap: 8px; }
+  .input-with-action .input-text { flex: 1; }
   .unit { color: #4e5969; margin-left: 8px; }
 
   /* ============ Tag List (airlines) ============ */
@@ -116,6 +119,8 @@
   .btn-del { background: #fff1f0; color: #f53f3f; }
   .small-link { font-size: 13px; color: #2c4a7e; cursor: pointer; }
   .small-link:hover { text-decoration: underline; }
+  .btn-inline { flex-shrink: 0; border: 1px solid #2c4a7e; background: #fff; color: #2c4a7e; border-radius: 4px; padding: 7px 12px; font-size: 13px; cursor: pointer; }
+  .btn-inline:hover { background: #f0f5ff; }
   .bot-preview { margin-top: 10px; border: 1px solid #e5e6eb; border-radius: 6px; background: #fafbfc; overflow: hidden; }
   .bot-preview-head { padding: 8px 10px; background: #f0f5ff; color: #2c4a7e; font-size: 12px; font-weight: 600; }
   .bot-preview-body { padding: 10px; font-size: 12px; color: #4e5969; }
@@ -132,6 +137,26 @@
   .btn:hover { border-color: #2c4a7e; color: #2c4a7e; }
   .btn-primary { background: #2c4a7e; border-color: #2c4a7e; color: #fff; }
   .btn-primary:hover { background: #1d3a6b; border-color: #1d3a6b; color: #fff; }
+
+  /* ============ Drawer ============ */
+  .drawer-mask { position: fixed; inset: 0; background: rgba(29, 33, 41, 0.28); opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 200; }
+  .drawer-mask.open { opacity: 1; pointer-events: auto; }
+  .drawer-panel { position: fixed; top: 0; right: 0; width: 440px; max-width: calc(100vw - 32px); height: 100vh; background: #fff; box-shadow: -8px 0 24px rgba(29, 33, 41, 0.12); transform: translateX(100%); transition: transform 0.2s; z-index: 201; display: flex; flex-direction: column; }
+  .drawer-panel.open { transform: translateX(0); }
+  .drawer-header { padding: 20px 24px; border-bottom: 1px solid #e5e6eb; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .drawer-title { font-size: 18px; font-weight: 600; color: #1d2129; }
+  .drawer-close { border: none; background: #f2f3f5; color: #4e5969; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 18px; line-height: 28px; }
+  .drawer-body { padding: 20px 24px 28px; overflow-y: auto; flex: 1; }
+  .airline-list { border: 1px solid #e5e6eb; border-radius: 6px; overflow: hidden; }
+  .airline-list-row { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-bottom: 1px solid #e5e6eb; color: #4e5969; font-size: 15px; }
+  .airline-list-row:nth-child(odd) { background: #fafbfc; }
+  .airline-list-row:last-child { border-bottom: none; }
+  .airline-logo { width: 34px; height: 34px; border-radius: 6px; background: #f0f5ff; color: #2c4a7e; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .drawer-tip { margin-top: 14px; padding: 10px 12px; border-radius: 6px; background: #f7faff; border: 1px solid #d8e6ff; color: #4e5969; font-size: 13px; }
+  .guide-list { display: grid; gap: 12px; }
+  .guide-step { border: 1px solid #e5e6eb; border-radius: 6px; padding: 14px 16px; background: #fafbfc; }
+  .guide-step-title { font-weight: 600; color: #1d2129; margin-bottom: 6px; }
+  .guide-step-desc { color: #86909c; font-size: 13px; }
 
 </style>
 </head>
@@ -229,17 +254,17 @@
             <div class="readonly-rule">
               数据质量、系统问题、余额不足、定时维护、业务转化比超限
             </div>
-            <div class="form-hint">所有航司状态类型默认通知，无需单独选择。</div>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-label">通知范围</div>
           <div class="form-content">
-            <div class="readonly-rule">
-              仅通知已关注航司
+            <div class="readonly-rule with-action">
+              <span>已关注航司</span>
+              <button class="btn-inline" type="button" id="openFollowedAirlines">查看已关注航司</button>
             </div>
-            <div class="form-hint">该规则与当前线上通知规则保持一致，暂不支持关闭。</div>
+            <div class="form-hint">可以到航司能力页面对航司进行关注。</div>
           </div>
         </div>
 
@@ -272,6 +297,15 @@
   </main>
 </div>
 
+<div class="drawer-mask" id="drawerMask"></div>
+<aside class="drawer-panel" id="drawerPanel" aria-hidden="true">
+  <div class="drawer-header">
+    <div class="drawer-title" id="drawerTitle">操作指引</div>
+    <button class="drawer-close" type="button" id="drawerClose">×</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+
 <script>
   const channelConfigs = {
     webhook: {
@@ -281,7 +315,10 @@
         <div class="form-row">
           <div class="form-label">Webhook URL</div>
           <div class="form-content">
-            <input type="text" class="input-text" placeholder="https://your-domain.com/webhook" value="https://hooks.example.com/atrip/airline-status">
+            <div class="input-with-action">
+              <input type="text" class="input-text" placeholder="https://your-domain.com/webhook" value="https://hooks.example.com/atrip/airline-status">
+              <button class="btn-inline js-guide" type="button" data-guide="webhook">如何获取</button>
+            </div>
             <div class="form-hint">用于接收航司状态通知的客户系统地址。</div>
           </div>
         </div>
@@ -301,6 +338,7 @@
             <div class="email-row"><input type="text" class="input-text" value="yi.li@atlaslovestravel.com"><button class="email-action btn-del">−</button></div>
             <div class="email-row"><input type="text" class="input-text" value="sumon.mittra@atlaslovestravel.com"><button class="email-action btn-del">−</button></div>
             <div class="email-row"><input type="text" class="input-text" value="standie.nagadi@atlaslovestravel.com"><button class="email-action btn-add">+</button><button class="email-action btn-del">−</button></div>
+            <button class="btn-inline js-guide" type="button" data-guide="email">配置说明</button>
           </div>
         </div>
         <div class="form-row">
@@ -316,7 +354,10 @@
         <div class="form-row">
           <div class="form-label">Webhook URL</div>
           <div class="form-content">
-            <input type="text" class="input-text" placeholder="https://oapi.dingtalk.com/robot/send?access_token=...">
+            <div class="input-with-action">
+              <input type="text" class="input-text" placeholder="https://oapi.dingtalk.com/robot/send?access_token=...">
+              <button class="btn-inline js-guide" type="button" data-guide="dingtalk">如何获取</button>
+            </div>
           </div>
         </div>
         <div class="form-row">
@@ -339,7 +380,10 @@
         <div class="form-row">
           <div class="form-label">Webhook URL</div>
           <div class="form-content">
-            <input type="text" class="input-text" placeholder="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=...">
+            <div class="input-with-action">
+              <input type="text" class="input-text" placeholder="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=...">
+              <button class="btn-inline js-guide" type="button" data-guide="wecom">如何获取</button>
+            </div>
           </div>
         </div>
         <div class="form-row">
@@ -356,7 +400,10 @@
         <div class="form-row">
           <div class="form-label">Channel ID</div>
           <div class="form-content">
-            <input type="text" class="input-text" placeholder="C0XXXXXXXXX" value="C0AB3GUPJTG">
+            <div class="input-with-action">
+              <input type="text" class="input-text" placeholder="C0XXXXXXXXX" value="C0AB3GUPJTG">
+              <button class="btn-inline js-guide" type="button" data-guide="slack">如何获取</button>
+            </div>
             <div class="form-hint">Bot Token 由 Atrip 统一维护；每个客户配置自己的通知 Channel ID。</div>
           </div>
         </div>
@@ -374,7 +421,10 @@
         <div class="form-row">
           <div class="form-label">Workflow URL</div>
           <div class="form-content">
-            <input type="text" class="input-text" placeholder="https://...powerplatform.com/.../workflows/...">
+            <div class="input-with-action">
+              <input type="text" class="input-text" placeholder="https://...powerplatform.com/.../workflows/...">
+              <button class="btn-inline js-guide" type="button" data-guide="teams">如何获取</button>
+            </div>
           </div>
         </div>
         <div class="form-row">
@@ -385,6 +435,30 @@
       `
     }
   };
+
+  const followedAirlines = [
+    ['3K', 'Jetstar Asia'],
+    ['PR', 'Philippine Airlines'],
+    ['RS', 'Air Seoul'],
+    ['TR', 'Scoot'],
+    ['DY', 'Norwegian Air Shuttle ASA'],
+    ['SG', 'SpiceJet'],
+    ['FZ', 'Flydubai'],
+    ['BC', 'Skymark Airlines'],
+    ['I5', 'AirAsia India'],
+    ['LJ', 'Jin Air']
+  ];
+
+  const guideConfigs = {
+    webhook: 'Webhook URL 获取指引',
+    email: '邮件收件人配置说明',
+    dingtalk: '钉钉 Webhook 获取指引',
+    wecom: '企微 Webhook 获取指引',
+    slack: 'Slack Channel ID 获取指引',
+    teams: 'Teams Workflow URL 获取指引'
+  };
+
+  const guideSteps = ['前置条件', '创建入口', '获取配置项', '回到 Atrip 填写', '发送测试通知'];
 
   function botPreview(head, title) {
     return `
@@ -411,6 +485,46 @@
     document.getElementById('channelFields').innerHTML = config.fields;
   }
 
+  function openDrawer(title, body) {
+    document.getElementById('drawerTitle').textContent = title;
+    document.getElementById('drawerBody').innerHTML = body;
+    document.getElementById('drawerMask').classList.add('open');
+    document.getElementById('drawerPanel').classList.add('open');
+    document.getElementById('drawerPanel').setAttribute('aria-hidden', 'false');
+  }
+
+  function closeDrawer() {
+    document.getElementById('drawerMask').classList.remove('open');
+    document.getElementById('drawerPanel').classList.remove('open');
+    document.getElementById('drawerPanel').setAttribute('aria-hidden', 'true');
+  }
+
+  function openFollowedAirlinesDrawer() {
+    const rows = followedAirlines.map(([code, name]) => `
+      <div class="airline-list-row">
+        <span class="airline-logo">${code}</span>
+        <span>${name} (${code})</span>
+      </div>
+    `).join('');
+
+    openDrawer('已关注航司', `
+      <div class="airline-list">${rows}</div>
+      <div class="drawer-tip">可以到航司能力页面对航司进行关注。</div>
+    `);
+  }
+
+  function openGuideDrawer(guideKey) {
+    const title = guideConfigs[guideKey] || '渠道对接操作手册';
+    const steps = guideSteps.map((step, index) => `
+      <div class="guide-step">
+        <div class="guide-step-title">${index + 1}. ${step}</div>
+        <div class="guide-step-desc">待补充</div>
+      </div>
+    `).join('');
+
+    openDrawer(title, `<div class="guide-list">${steps}</div>`);
+  }
+
   document.querySelectorAll('.scenario-tab').forEach(tab => {
     tab.addEventListener('click', () => {
       document.querySelectorAll('.scenario-tab').forEach(t => t.classList.remove('active'));
@@ -420,6 +534,16 @@
   });
 
   renderChannel('webhook');
+
+  document.getElementById('openFollowedAirlines').addEventListener('click', openFollowedAirlinesDrawer);
+  document.getElementById('drawerMask').addEventListener('click', closeDrawer);
+  document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+  document.getElementById('channelFields').addEventListener('click', e => {
+    const guideButton = e.target.closest('.js-guide');
+    if (guideButton) {
+      openGuideDrawer(guideButton.dataset.guide);
+    }
+  });
 
   document.querySelectorAll('.channel-toggle').forEach(t => {
     t.addEventListener('click', () => {
