@@ -41,6 +41,7 @@
         .stat-card.online .stat-value { color: var(--success-color); }
         .stat-card.fault .stat-value { color: var(--error-color); }
         .stat-card.warning .stat-value { color: var(--warning-color); }
+        .stat-card.disabled .stat-value { color: var(--warning-color); }
         .stat-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
         .section { background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 4px; margin-bottom: 24px; }
         .section.highlight { border-color: var(--warning-color); box-shadow: 0 2px 8px rgba(250,173,20,0.15); }
@@ -156,6 +157,11 @@
             </div>
             <div class="stat-card warning" onclick="showModal('balanceModal')">
                 <div class="stat-label">余额不足航司<span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">余额不足预警航司</div>因账户余额不足可能影响出票的航司数量。当航司余额低于预警阈值时，可能导致出票失败。<div class="tooltip-refresh">🔄 刷新频率: 每5分钟自动刷新</div></div></span></div>
+                <div class="stat-value">2</div>
+                <div class="stat-sub">点击查看详情 →</div>
+            </div>
+            <div class="stat-card disabled" onclick="showModal('searchDisabledModal')">
+                <div class="stat-label">搜索禁用航司<span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">搜索禁用航司</div>当前客户账号搜索权限被临时限制的航司数量。该状态为账号维度，不代表平台级航司故障。<div class="tooltip-refresh">🔄 刷新频率: 每5分钟自动刷新</div></div></span></div>
                 <div class="stat-value">2</div>
                 <div class="stat-sub">点击查看详情 →</div>
             </div>
@@ -512,6 +518,23 @@
                     <tbody>
                         <tr><td><a href="airline-detail-zh.html">Ryanair (FR)</a></td><td><span style="color:var(--warning-color);">⚠ 余额不足</span></td></tr>
                         <tr><td><a href="airline-detail-zh.html">Wizz Air (W6)</a></td><td><span style="color:var(--warning-color);">⚠ 余额不足</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="searchDisabledModal">
+        <div class="modal">
+            <div class="modal-header"><span class="modal-title">搜索禁用航司 (2)</span><button class="modal-close" onclick="hideModal('searchDisabledModal')">×</button></div>
+            <div class="modal-body">
+                <div style="background:#fff7e6;border:1px solid #ffe58f;border-radius:4px;padding:8px 12px;margin-bottom:12px;font-size:12px;color:#d48806;">⚠️ 这是账号维度状态。这些航司仅对当前账号临时禁用。</div>
+                <input type="text" class="modal-search" placeholder="搜索航司..." oninput="filterModalList(this, 'searchDisabledModal')">
+                <table class="simple-table">
+                    <thead><tr><th>航司名称</th><th>原因</th><th>开始时间</th><th>结束时间</th></tr></thead>
+                    <tbody>
+                        <tr><td><a href="airline-detail-zh.html">Vueling (VY)</a></td><td>查定比超限</td><td>2025-12-11 20:30:45</td><td>2025-12-12 08:30:00</td></tr>
+                        <tr><td><a href="airline-detail-zh.html">Pegasus (PC)</a></td><td>查定比超限</td><td>2025-12-11 17:15:22</td><td>2025-12-12 05:15:00</td></tr>
                     </tbody>
                 </table>
             </div>

@@ -63,6 +63,7 @@
         .stat-card.online .stat-value { color: var(--success-color); }
         .stat-card.fault .stat-value { color: var(--error-color); }
         .stat-card.warning .stat-value { color: var(--warning-color); }
+        .stat-card.disabled .stat-value { color: var(--warning-color); }
         .stat-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
         .section {
             background: var(--bg-white);
@@ -263,6 +264,14 @@
                 <div class="stat-label">
                     Low Balance Alerts
                     <span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">Low Balance Alerts</div>The number of airlines that may affect ticketing due to insufficient account balance. When an airline's balance falls below the warning threshold, ticketing may fail.<div class="tooltip-refresh">🔄 Refresh: Every 5 minutes, manual refresh supported</div></div></span>
+                </div>
+                <div class="stat-value">2</div>
+                <div class="stat-sub">Click for details →</div>
+            </div>
+            <div class="stat-card disabled" onclick="showModal('searchDisabledModal')">
+                <div class="stat-label">
+                    Search Disabled
+                    <span class="info-icon">ⓘ<div class="tooltip"><div class="tooltip-title">Search Disabled Airlines</div>The number of airlines with search access temporarily limited for the current customer account.<br>This status is account-specific and does not indicate a platform-wide airline outage.<div class="tooltip-refresh">🔄 Refresh: Every 5 minutes, manual refresh supported</div></div></span>
                 </div>
                 <div class="stat-value">2</div>
                 <div class="stat-sub">Click for details →</div>
@@ -640,6 +649,25 @@
                     <tbody>
                         <tr><td><a href="airline-detail-en.html">Ryanair (FR)</a></td><td><span style="color:var(--warning-color);">⚠ Low Balance</span></td></tr>
                         <tr><td><a href="airline-detail-en.html">Wizz Air (W6)</a></td><td><span style="color:var(--warning-color);">⚠ Low Balance</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="searchDisabledModal">
+        <div class="modal">
+            <div class="modal-header"><span class="modal-title">Search Disabled Airlines (2)</span><button class="modal-close" onclick="hideModal('searchDisabledModal')">×</button></div>
+            <div class="modal-body">
+                <div style="background:#fff7e6;border:1px solid #ffe58f;border-radius:4px;padding:8px 12px;margin-bottom:12px;font-size:12px;color:#d48806;">⚠️ This is an account-specific status. These airlines are temporarily disabled only for your account.</div>
+                <div style="margin-bottom:12px;">
+                    <input type="text" placeholder="Search by name or code..." style="width:100%;padding:6px 10px;border:1px solid var(--border-color);border-radius:4px;font-size:13px;" oninput="filterModalList(this)">
+                </div>
+                <table class="simple-table">
+                    <thead><tr><th>Airline Name</th><th>Reason</th><th>Start Time</th><th>End Time</th></tr></thead>
+                    <tbody>
+                        <tr><td><a href="airline-detail-en.html">Vueling (VY)</a></td><td>Access limited due to traffic governance control</td><td>2025-12-11 20:30:45</td><td>2025-12-12 08:30:00</td></tr>
+                        <tr><td><a href="airline-detail-en.html">Pegasus (PC)</a></td><td>Access limited due to traffic governance control</td><td>2025-12-11 17:15:22</td><td>2025-12-12 05:15:00</td></tr>
                     </tbody>
                 </table>
             </div>
